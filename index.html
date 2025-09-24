@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>페이지 명</title>
+
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+
+    <style>
+        body {
+            font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            overflow-x: hidden;
+            min-height: 100vh;
+            background-color: #101010; /*배경 색*/
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('배경 이미지 주소'); /*배경 이미지 '주소', 없으면 상단 배경색으로 보임*/
+            background-size: cover;
+            background-position: center;
+            filter: blur(10px) brightness(0.1);
+            z-index: -1;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            margin: 0 auto;
+            container-type: inline-size;
+            padding: 20px 0;
+        }
+        .song-entry {
+            margin-bottom: 80px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+        }
+        .song-entry::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            filter: blur(15px) brightness(0.5);
+            transform: scale(1.1);
+            z-index: -1;
+        }
+        .playlist-container .song-entry:last-child {
+            margin-bottom: 0;
+        }
+        .card-body {
+            display: flex;
+            gap: 30px;
+        }
+        .left-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .album-cover {
+            width: 100%;
+            position: relative;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+        .album-cover::after {
+            content: '';
+            display: block;
+            padding-bottom: 100%;
+        }
+        .album-cover img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .youtube-player {
+            width: 100%;
+            height: 30px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+        }
+        .youtube-player iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 0;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+
+        .song-title {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .song-title .title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+            color: #ffffff;
+        }
+        .song-title .artist {
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            margin: 5px 0 0 0;
+        }
+        .right-column {
+            flex: 1;
+        }
+        .lyrics {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            height: 540px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .quote {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            font-style: italic;
+            font-weight: bold;
+            color: #f5f5f5;
+        }
+
+
+        /*말풍선 영역*/
+        .bubble-container {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .bubble {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 12px;
+            line-height: 1.6;
+            background-color: #1a1a1a; /*말풍선 색*/
+            color: #4188e4; /*글자 색*/
+            width: fit-content;
+            font-size: 0.8rem;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+        .bubble-left {
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+        .bubble-right {
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .italic-gray {
+            color: #818181; /* * *로 감싼 텍스트 색상*/
+            font-style: italic;
+        }
+
+        .trivia {
+            opacity: 40%;
+            margin-top: 25px;
+            text-align: center;
+            font-style: italic;
+            color: #ffffff;
+            font-size: 0.7rem;
+            white-space: pre-wrap;
+        }
+
+        .user-id-display {
+            opacity: 30%;
+            padding: 30px 0;
+            text-align: center;
+            color: #7a7a7a;
+            font-size: 13px;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+        }
+
+        @media (max-width: 768px) {
+            .container { width: 95%; }
+            .card-body { flex-direction: column; }
+            .lyrics { height: 400px; }
+        }
+
+        .lyrics::-webkit-scrollbar {width: 8px;}
+        .lyrics::-webkit-scrollbar-track {background-color: rgba(255, 255, 255, 0.1); border-radius: 4px;}
+        .lyrics::-webkit-scrollbar-thumb {background-color: rgba(255, 255, 255, 0.3); border-radius: 4px; border: 1px solid rgba(0, 0, 0, 0.2);}
+        .lyrics::-webkit-scrollbar-thumb:hover {background-color: rgba(255, 255, 255, 0.5);}
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="playlist-container">
+
+
+            <!--노래 카드 영역-->
+            <div class="song-entry" data-youtube-id="영상 id"> <!--유튜브 영상 링크에서 www.youtube.com/watch?v= ~ & 사이에 있는 부분 기입-->
+                <div class="card-body">
+                    <div class="left-column">
+                        <div class="album-cover">
+                            <img src="커버 이미지" alt="앨범 커버"> <!--이미지 *주소*, 1:1 비율, 아니면 중앙 기준 정사각형으로 잘려서 보임-->
+                        </div>
+                        <div class="youtube-player"></div>
+
+                        <!--제목/가수-->
+                        <div class="song-title">
+                            <h2 class="title">제목</h2>
+                            <p class="artist">가수</p>
+                        </div>
+                    </div>
+
+                    <!--가사-->
+                    <div class="right-column">
+                        <div class="lyrics">
+가사
+                        </div>
+                    </div>
+                </div>
+
+		<!--사용하지 않는 부분은 <div~ 부터 바로 다음 </div>까지 지우시면 됩니다.-->
+                <!--한줄-->
+                <div class="quote">
+한줄
+                </div>
+
+                <!--말풍선 영역/ * *로 감싼 텍스트 회색 이탤릭체로 보임-->
+                <div class="bubble-container">
+                    <div class="bubble bubble-left">왼 *말풍선*</div> <!--왼쪽 말풍선-->
+                    <div class="bubble bubble-right">오 *말풍선*</div> <!--오른쪽 말풍선-->
+                </div>
+
+                <!--사담-->
+                <div class="trivia">
+여담
+                </div>
+
+            </div>
+            <!--카드 추가 시 이 밑으로 계속 카드 영역 부분 코드 복붙-->
+
+
+
+
+<!--이하 수정X-->
+        </div>
+    </div>
+    <div class="user-id-display">@KOT4T2U</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const songEntries = document.querySelectorAll('.song-entry');
+            songEntries.forEach(entry => {
+                const img = entry.querySelector('.album-cover img');
+                if (img && img.src) {
+                    entry.style.setProperty('--bg-image', `url('${img.src}')`);
+                }
+
+                const youtubeId = entry.dataset.youtubeId;
+                const playerContainer = entry.querySelector('.youtube-player');
+                if (youtubeId && playerContainer) {
+                    const iframe = document.createElement('iframe');
+                    iframe.src = `https://www.youtube.com/embed/${youtubeId}?controls=0&rel=0&autoplay=0`;
+                    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                    iframe.allowFullscreen = true;
+                    playerContainer.appendChild(iframe);
+                }
+            });
+
+            const bubbles = document.querySelectorAll('.bubble');
+            bubbles.forEach(bubble => {
+                let originalText = bubble.innerHTML;
+
+                const italicRegex = /\*([^*]+)\*/g;
+                let processedText = originalText.replace(italicRegex, '<span class="italic-gray">$1</span>');
+
+                bubble.innerHTML = processedText;
+            });
+        });
+    </script>
+
+</body>
+</html>
